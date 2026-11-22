@@ -1,0 +1,32 @@
+name: Orderstatus automatisering
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Alleen tonen wat er zou veranderen (geen wijziging)"
+        type: boolean
+        default: true
+  # Activeren na een geslaagde dry-run: verwijder de '#' bij 'schedule' hieronder.
+  # Standaard elke 5 minuten (12x per uur).
+  # schedule:
+  #   - cron: "*/5 * * * *"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment: orderstatus-automatisering
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Orderstatus bijwerken
+        env:
+          CCV_SHOP_URL: ${{ vars.CCV_SHOP_URL }}
+          CCV_API_KEY: ${{ secrets.CCV_API_KEY }}
+          CCV_API_SECRET: ${{ secrets.CCV_API_SECRET }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && 'true' || 'false' }}
+        run: python update_order_status.py
