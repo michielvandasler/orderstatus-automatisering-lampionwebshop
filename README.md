@@ -20,7 +20,8 @@ Pas de cron-regel in `.github/workflows/update-order-status.yml` aan. Op een gra
 
 | Interval | Cron | Runs/dag | Minuten/maand |
 |---|---|---|---|
-| Elke 5 minuten (standaard hier) | `*/5 * * * *` | 288 | ± 8.700 |
+| Elke 5 minuten | `*/5 * * * *` | 288 | ± 8.700 |
+| Elke 10 minuten (standaard hier) | `*/10 * * * *` | 144 | ± 4.400 |
 | Elke 15 minuten | `*/15 * * * *` | 96 | ± 2.900 |
 | Elk uur | `5 * * * *` | 24 | ± 730 |
 
