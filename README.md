@@ -2,21 +2,21 @@
 
 Zet in CCV Shop ([lampionwebshop.nl](https://www.lampionwebshop.nl)) automatisch elke order met status **"Nieuw" (1)** die **betaald** is en **maximaal 32 dagen** oud is, over op **"In behandeling" (2)**. Oudere orders worden overgeslagen.
 
-Draait via GitHub Actions (gratis). Bij de statuswijziging wordt de klant niet gemaild (de API-standaard `mail: false` blijft).
+Draait via GitHub Actions (openbare repository = onbeperkt gratis Actions-minuten). Bij de statuswijziging wordt de klant niet gemaild (de API-standaard `mail: false` blijft).
 
 ## Eenmalige installatie
 
-1. Zet deze repository op GitHub als **Private**.
+1. Deze repository staat op **Public**: daarmee zijn de Actions-minuten onbeperkt gratis.
 2. Koppel het environment: *Settings → Environments → New environment* → naam `orderstatus-automatisering`.
 3. Voeg onder dit environment toe (*Environment secrets* en *Environment variables*):
    - Secrets: `CCV_API_KEY` = je API key uit CCV Shop (Mijn Webshop → Instellingen → API gegevens) en `CCV_API_SECRET` = je API secret. De API key heeft lees- en schrijfrechten op orders nodig.
    - Variable: `CCV_SHOP_URL` = `https://www.lampionwebshop.nl`
 4. **Dry-run (gedaan):** ga naar *Actions → Orderstatus automatisering → Run workflow* en vink **dry_run** aan. Het script toont dan alleen welke orders op "In behandeling" gezet zouden worden, zonder iets te wijzigen en zonder mail te versturen.
-5. **Schema:** het script draait automatisch om de 5 minuten (12× per uur). De frequentie pas je aan, zie tabel hieronder.
+5. **Schema:** het script draait automatisch om de 10 minuten (6× per uur). De frequentie pas je aan, zie tabel hieronder.
 
 ## Schema aanpassen
 
-Pas de cron-regel in `.github/workflows/update-order-status.yml` aan. Op een gratis privérepo heb je 2.000 Actions-minuten per maand; elke run rekent minimaal 1 minuut:
+Pas de cron-regel in `.github/workflows/update-order-status.yml` aan. Elke run rekent minimaal 1 minuut als de repository privé staat; openbaar is het onbeperkt gratis:
 
 | Interval | Cron | Runs/dag | Minuten/maand |
 |---|---|---|---|
@@ -25,7 +25,7 @@ Pas de cron-regel in `.github/workflows/update-order-status.yml` aan. Op een gra
 | Elke 15 minuten | `*/15 * * * *` | 96 | ± 2.900 |
 | Elk uur | `5 * * * *` | 24 | ± 730 |
 
-Let op: bij elke 5 of 15 minuten kom je boven de 2.000 gratis minuten per maand uit. Wil je binnen het gratis pakket blijven, kies dan het bare schema per uur. GitHub zet schedules ook automatisch uit na 60 dagen zonder commits in de repository.
+Let op: GitHub zet schedules automatisch uit na 60 dagen zonder commits in de repository; een commit reset dit.
 
 ## Regels
 
