@@ -10,9 +10,13 @@ on:
   # Standaard elke 5 minuten (12x per uur).
   schedule:
     - cron: "1-56/5 * * * *"
+  # Betrouwbare trigger via externe pinger (cron-job.org): elke 5 minuten.
+  repository_dispatch:
+    types: [orderstatus-check]
 
 jobs:
   update:
+    if: github.event_name != 'repository_dispatch' || github.event.action == 'orderstatus-check'
     runs-on: ubuntu-latest
     environment: orderstatus-automatisering
     steps:

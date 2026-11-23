@@ -38,6 +38,14 @@ Let op: GitHub zet schedules automatisch uit na 60 dagen zonder commits in de re
 | E-mail naar klant | Nee (`mail` blijft op de API-standaard `false`) |
 | API-limieten | Ophalen 150/min, patchen 100/min (script vertraagt automatisch) |
 
+## Betrouwbare 5-minuten-trigger (repository_dispatch)
+
+GitHub voert geplande runs best-effort uit (in de praktijk ~1× per uur). Voor echte elke-5-minuten-betrouwbaarheid roept een externe pinger (bijv. cron-job.org, gratis) de GitHub-API aan:
+
+- Trigger elke 5 minuten,methode `POST` naar `https://api.github.com/repos/michielvandasler/orderstatus-automatisering-lampionwebshop/dispatches`
+- Headers: `Authorization: Bearer <fine-grained PAT met Actions: Read and write op dit repo>`, `Accept: application/vnd.github+json` en `Content-Type: application/json`
+- Body: `{"event_type":"orderstatus-check"}`
+
 ## Lokaal testen
 
 ```bash
