@@ -9,7 +9,7 @@ on:
         default: true
   # Standaard elke 5 minuten (12x per uur).
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "1-56/5 * * * *"
 
 jobs:
   update:
