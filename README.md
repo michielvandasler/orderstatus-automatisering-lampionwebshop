@@ -12,7 +12,7 @@ Draait via GitHub Actions (openbare repository = onbeperkt gratis Actions-minute
    - Secrets: `CCV_API_KEY` = je API key uit CCV Shop (Mijn Webshop → Instellingen → API gegevens) en `CCV_API_SECRET` = je API secret. De API key heeft lees- en schrijfrechten op orders nodig.
    - Variable: `CCV_SHOP_URL` = `https://www.lampionwebshop.nl`
 4. **Dry-run (gedaan):** ga naar *Actions → Orderstatus automatisering → Run workflow* en vink **dry_run** aan. Het script toont dan alleen welke orders op "In behandeling" gezet zouden worden, zonder iets te wijzigen en zonder mail te versturen.
-5. **Schema:** het script draait automatisch om de 10 minuten (6× per uur). De frequentie pas je aan, zie tabel hieronder.
+5. **Schema:** het script draait automatisch om de 5 minuten (12× per uur). De frequentie pas je aan, zie tabel hieronder.
 
 ## Schema aanpassen
 
@@ -20,8 +20,8 @@ Pas de cron-regel in `.github/workflows/update-order-status.yml` aan. Elke run r
 
 | Interval | Cron | Runs/dag | Minuten/maand |
 |---|---|---|---|
-| Elke 5 minuten | `*/5 * * * *` | 288 | ± 8.700 |
-| Elke 10 minuten (standaard hier) | `*/10 * * * *` | 144 | ± 4.400 |
+| Elke 5 minuten (standaard hier) | `*/5 * * * *` | 288 | ± 8.700 |
+| Elke 10 minuten | `*/10 * * * *` | 144 | ± 4.400 |
 | Elke 15 minuten | `*/15 * * * *` | 96 | ± 2.900 |
 | Elk uur | `5 * * * *` | 24 | ± 730 |
 
