@@ -33,8 +33,7 @@ Let op: bij elke 5 of 15 minuten kom je boven de 2.000 gratis minuten per maand 
 | Van status | 1 (Nieuw) |
 | Naar status | 2 (In proces / In behandeling) |
 | Voorwaarde | `paid = true` én `create_date` binnen 32 dagen |
-| Filtermethode | Server-side filters: `status`, `is_paid`, `min_create_date` |
-| `min_create_date` | Formaat `Y-m-d` (bijv. `2026-10-21`), script geeft dit zelf mee |
+| Filtermethode | Server-side: `status`, `min_create_date` (formaat `Y-m-d`); betaald-filter client-side op `paid` |
 | E-mail naar klant | Nee (`mail` blijft op de API-standaard `false`) |
 | API-limieten | Ophalen 150/min, patchen 100/min (script vertraagt automatisch) |
 

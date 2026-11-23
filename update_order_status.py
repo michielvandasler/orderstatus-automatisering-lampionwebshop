@@ -38,7 +38,7 @@ def request(method: str, uri: str, data: str | None = None, retries: int = 3) ->
     hash_string = f"{API_KEY}|{method}|{uri}|{body}|{timestamp}"
     request_hash = hmac.new(API_SECRET.encode(), hash_string.encode(), hashlib.sha512).hexdigest()
 
-    req = urllib.request.Request(SHOP_URL + uri, method=method)
+    req = urllib.request.Request(SHOP_URL + uri, data=body.encode("utf-8") if body else None, method=method)
     req.add_header("x-public", API_KEY)
     req.add_header("x-date", timestamp)
     req.add_header("x-hash", request_hash)
@@ -63,12 +63,12 @@ def request(method: str, uri: str, data: str | None = None, retries: int = 3) ->
     raise CcvApiError(f"{method} {uri} -> onbereikbaar")
 
 
-def fetch_new_paid_orders(min_create_date: str) -> list[dict]:
+def fetch_new_orders(min_create_date: str) -> list[dict]:
     orders: list[dict] = []
     start = 0
     for _ in range(50):
         uri = (
-            f"{API_BASE}/orders?status={STATUS_NIEUW}&is_paid=true"
+            f"{API_BASE}/orders?status={STATUS_NIEUW}"
             f"&min_create_date={urllib.parse.quote(min_create_date)}"
             f"&start={start}&size={PAGE_SIZE}"
         )
@@ -106,8 +106,18 @@ def main() -> int:
     if dry_run:
         print("DRY RUN: er worden geen statussen gewijzigd.")
 
-    candidates = fetch_new_paid_orders(min_create_date)
-    print(f"Gevonden: {len(candidates)} kandidaat-order(s).")
+    raw = fetch_new_orders(min_create_date)
+    print(f"Ontvangen: {len(raw)} order(s) met status Nieuw.")
+
+    candidates = []
+    for order in raw:
+        if order.get("status") != STATUS_NIEUW or not order.get("paid"):
+            continue
+        created = order_created_at(order)
+        if created and now - created > timedelta(days=MAX_AGE_DAYS):
+            continue
+        candidates.append(order)
+    print(f"Gevonden: {len(candidates)} kandidaat-order(s) (betaald, binnen {MAX_AGE_DAYS} dagen).")
 
     changed = 0
     for order in candidates:
