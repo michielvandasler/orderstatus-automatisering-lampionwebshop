@@ -7,9 +7,9 @@ on:
         description: "Alleen tonen wat er zou veranderen (geen wijziging)"
         type: boolean
         default: true
-  # Standaard elke 5 minuten (12x per uur).
+  # Standaard elke 10 minuten (6x per uur).
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/10 * * * *"
 
 jobs:
   update:
