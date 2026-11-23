@@ -11,8 +11,8 @@ Draait via GitHub Actions (gratis). Bij de statuswijziging wordt de klant niet g
 3. Voeg onder dit environment toe (*Environment secrets* en *Environment variables*):
    - Secrets: `CCV_API_KEY` = je API key uit CCV Shop (Mijn Webshop → Instellingen → API gegevens) en `CCV_API_SECRET` = je API secret. De API key heeft lees- en schrijfrechten op orders nodig.
    - Variable: `CCV_SHOP_URL` = `https://www.lampionwebshop.nl`
-4. **Eerst testen (dry-run):** ga naar *Actions → Orderstatus automatisering → Run workflow* en vink **dry_run** aan. Het script toont dan alleen welke orders op "In behandeling" gezet zouden worden, zonder iets te wijzigen en zonder mail te versturen.
-5. **Daarna activeren:** verwijder in `.github/workflows/update-order-status.yml` de `#` bij de regels `# schedule:` en `#   - cron: "*/5 * * * *"` en commit. Het schema draait dan elke 5 minuten (12× per uur).
+4. **Dry-run (gedaan):** ga naar *Actions → Orderstatus automatisering → Run workflow* en vink **dry_run** aan. Het script toont dan alleen welke orders op "In behandeling" gezet zouden worden, zonder iets te wijzigen en zonder mail te versturen.
+5. **Schema:** het script draait automatisch om de 5 minuten (12× per uur). De frequentie pas je aan, zie tabel hieronder.
 
 ## Schema aanpassen
 
